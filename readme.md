@@ -1,6 +1,6 @@
 # [gulp](https://github.com/wearefractal/gulp)-tar [![Build Status](https://secure.travis-ci.org/sindresorhus/gulp-tar.png?branch=master)](http://travis-ci.org/sindresorhus/gulp-tar)
 
-> Create [tarball](http://en.wikipedia.org/wiki/Tar_(computing)) from files
+> Create [tarball](http://en.wikipedia.org/wiki/Tar_(computing\)) from files
 
 
 ## Install
