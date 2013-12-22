@@ -1,0 +1,43 @@
+{
+  "name": "gulp-tar",
+  "version": "0.0.0",
+  "description": "Create tarball from files",
+  "license": "MIT",
+  "repository": "sindresorhus/gulp-tar",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "http://sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "gulpplugin",
+    "tar",
+    "tarball",
+    "archive",
+    "archiver",
+    "compress",
+    "compression",
+    "file",
+    "files",
+    "stream",
+    "streams"
+  ],
+  "dependencies": {
+    "event-stream": "~3.0.20",
+    "gulp-util": "~2.2.0",
+    "tar-stream": "~0.2.1"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "gulp": "~3.2.0"
+  }
+}
