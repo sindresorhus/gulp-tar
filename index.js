@@ -1,40 +1,47 @@
 'use strict';
 var path = require('path');
-var es = require('event-stream');
 var gutil = require('gulp-util');
+var through = require('through2');
 var tar = require('tar-stream');
 
 module.exports = function (filename) {
 	if (!filename) {
-		throw new Error('Missing filename.');
+		throw new gutil.PluginError('gulp-tar', '`filename` required');
 	}
 
 	var firstFile;
 	var pack = tar.pack();
 
-	return es.through(function (file) {
-		if (!firstFile) {
+	return through.obj(function (file, enc, cb) {
+		if (file.isNull()) {
+			this.push(file);
+			return cb();
+		}
+
+		if (file.isStream()) {
+			this.emit('error', new gutil.PluginError('gulp-tar', 'Streaming not supported'));
+			return cb();
+		}
+
+		if (firstFile === undefined) {
 			firstFile = file;
 		}
 
-		var relativePath = file.path.replace(file.cwd + '/', '');
+		var relativePath = file.path.replace(file.cwd + path.sep, '');
 		pack.entry({name: relativePath}, file.contents);
-	}, function () {
-		if (!firstFile) {
-			return this.emit('end');
+		cb();
+	}, function (cb) {
+		if (firstFile === undefined) {
+			return cb();
 		}
 
 		pack.finalize();
-
-		var joinedPath = path.join(firstFile.cwd, filename);
-		var joinedFile = new gutil.File({
+		this.push(new gutil.File({
 			cwd: firstFile.cwd,
 			base: firstFile.cwd,
-			path: joinedPath,
+			path: path.join(firstFile.cwd, filename),
 			contents: pack
-		});
-
-		this.emit('data', joinedFile);
-		this.emit('end');
+		}));
+		cb();
 	});
 };
