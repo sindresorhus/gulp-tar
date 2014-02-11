@@ -2,27 +2,28 @@
 var assert = require('assert');
 var gutil = require('gulp-util');
 var tar = require('./index');
+var path = require('path');
 
 it('should tar files', function (cb) {
 	var stream = tar('test.tar');
 
 	stream.on('data', function (file) {
-		assert.equal(file.path, '~/dev/gulp-tar/test.tar');
+		assert.equal(file.path, path.join(__dirname, 'test.tar'));
 		assert.equal(file.relative, 'test.tar');
 		cb();
 	});
 
 	stream.write(new gutil.File({
-		cwd: '~/dev/gulp-tar',
-		base: '~/dev/gulp-tar/fixture',
-		path: '~/dev/gulp-tar/fixture/fixture.txt',
+		cwd: __dirname,
+		base: path.join(__dirname, 'fixture'),
+		path: path.join(__dirname, 'fixture/fixture.txt'),
 		contents: new Buffer('hello world')
 	}));
 
 	stream.write(new gutil.File({
-		cwd: '~/dev/gulp-tar',
-		base: '~/dev/gulp-tar/fixture',
-		path: '~/dev/gulp-tar/fixture/fixture2.txt',
+		cwd: __dirname,
+		base: path.join(__dirname, 'fixture'),
+		path: path.join(__dirname, 'fixture/fixture.txt'),
 		contents: new Buffer('hello world 2')
 	}));
 
