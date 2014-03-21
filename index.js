@@ -2,7 +2,7 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var tar = require('tar-stream');
+var archiver = require('archiver');
 
 module.exports = function (filename) {
 	if (!filename) {
@@ -10,15 +10,10 @@ module.exports = function (filename) {
 	}
 
 	var firstFile;
-	var pack = tar.pack();
+	var archive = archiver('tar');
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
-			return cb();
-		}
-
-		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError('gulp-tar', 'Streaming not supported'));
 			return cb();
 		}
 
@@ -27,19 +22,20 @@ module.exports = function (filename) {
 		}
 
 		var relativePath = file.path.replace(file.cwd + path.sep, '');
-		pack.entry({name: relativePath}, file.contents);
+		archive.append(file.contents, { name: relativePath } );
 		cb();
 	}, function (cb) {
 		if (firstFile === undefined) {
 			return cb();
 		}
 
-		pack.finalize();
+		archive.finalize();
+
 		this.push(new gutil.File({
 			cwd: firstFile.cwd,
 			base: firstFile.cwd,
 			path: path.join(firstFile.cwd, filename),
-			contents: pack
+			contents: archive
 		}));
 		cb();
 	});
