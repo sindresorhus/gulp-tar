@@ -2,7 +2,7 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var archiver = require("archiver");
+var archiver = require('archiver');
 
 module.exports = function (filename) {
 	if (!filename) {

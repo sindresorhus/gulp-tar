@@ -71,7 +71,7 @@ it('should output file.contents as a Stream', function (cb) {
 	var stream = tar('test.tar');
 
 	stream.on('data', function (file) {
-		assert(file.contents instanceof Stream, "File contents should be a Stream object");
+		assert(file.contents instanceof Stream, 'File contents should be a Stream object');
 		cb();
 	});
 
