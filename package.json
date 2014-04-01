@@ -32,13 +32,13 @@
     "streams"
   ],
   "dependencies": {
-    "gulp-util": "~2.2.0",
-    "through2": "~0.4.0",
-    "archiver": "~0.6.1"
+    "archiver": "^0.8.1",
+    "gulp-util": "^2.2.0",
+    "through2": "^0.4.0"
   },
   "devDependencies": {
     "mocha": "*",
     "gulp": "*",
-    "gulp-gzip": "0.0.5"
+    "gulp-gzip": "^0.0.5"
   }
 }
