@@ -34,10 +34,11 @@
   "dependencies": {
     "gulp-util": "~2.2.0",
     "through2": "~0.4.0",
-    "tar-stream": "~0.2.1"
+    "archiver": "~0.6.1"
   },
   "devDependencies": {
     "mocha": "*",
-    "gulp": "*"
+    "gulp": "*",
+    "gulp-gzip": "0.0.5"
   }
 }
