@@ -1,4 +1,4 @@
-# [gulp](https://github.com/wearefractal/gulp)-tar [![Build Status](https://travis-ci.org/sindresorhus/gulp-tar.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-tar)
+# [gulp](http://gulpjs.com)-tar [![Build Status](https://travis-ci.org/sindresorhus/gulp-tar.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-tar)
 
 > Create [tarball](http://en.wikipedia.org/wiki/Tar_(computing)) from files
 
