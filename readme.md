@@ -28,8 +28,12 @@ gulp.task('default', function () {
 
 ## API
 
-### tar(filename)
+### tar(filename, basePath)
+`filename` is the output file's name.
 
+`basePath` is the path you want to start with, for example:
+
+Assume your project is at `/home/work/project/`, and you want to tar path `/home/work/project/path/to/tar/`, if you don't provide basePath arg, the output tar file structure will look like `/path/to/tar/`, if you provide basePath as `path/to`, then the output tar file structure will look like `/tar`.
 
 ## License
 
