@@ -28,7 +28,9 @@ gulp.task('default', function () {
 
 ## API
 
-### tar(filename)
+### tar(filename, options)
+`filename` filename for the output tar archive  
+`options` default file headers passed to [tar-stream](https://github.com/mafintosh/tar-stream)
 
 
 ## License
