@@ -4,10 +4,11 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var archiver = require('archiver');
 
-module.exports = function (filename) {
+module.exports = function (filename, startPath) {
 	if (!filename) {
 		throw new gutil.PluginError('gulp-tar', '`filename` required');
 	}
+	startPath = startPath || '';
 
 	var firstFile;
 	var archive = archiver('tar');
@@ -21,7 +22,7 @@ module.exports = function (filename) {
 			firstFile = file;
 		}
 
-		var relativePath = file.path.replace(file.cwd + path.sep, '');
+		var relativePath = file.path.replace(path.join(file.cwd, startPath), '');
 		archive.append(file.contents, { name: relativePath } );
 		cb();
 	}, function (cb) {
