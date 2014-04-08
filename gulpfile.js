@@ -24,4 +24,9 @@ gulp.task('default', function () {
 		.pipe(tar('test4.tar'))
 		.pipe(gzip())
 		.pipe(gulp.dest('dest'));
+
+	// check default parameters for tar-stream
+	gulp.src('fixture/fixture.txt')
+		.pipe(tar('test_options.tar', {mtime: 0}))
+		.pipe(gulp.dest('dest'));
 });
