@@ -1,17 +1,13 @@
 'use strict';
 var path = require('path');
-var _ = require('lodash');
 var gutil = require('gulp-util');
 var through = require('through2');
+var assign = require('object-assign');
 var archiver = require('archiver');
 
 module.exports = function (filename, options) {
 	if (!filename) {
 		throw new gutil.PluginError('gulp-tar', '`filename` required');
-	}
-
-	if (typeof options === 'undefined') {
-		options = {};
 	}
 
 	var firstFile;
@@ -27,7 +23,7 @@ module.exports = function (filename, options) {
 		}
 
 		var relativePath = file.path.replace(file.cwd + path.sep, '');
-		archive.append(file.contents, _.merge({ name: relativePath }, options));
+		archive.append(file.contents, assign({ name: relativePath }, options || {}));
 		cb();
 	}, function (cb) {
 		if (firstFile === undefined) {
