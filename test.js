@@ -9,7 +9,7 @@ it('should tar files in buffer mode', function (cb) {
 	var stream = tar('test.tar');
 
 	stream.on('data', function (file) {
-		assert.equal(file.path, path.join(__dirname, 'test.tar'));
+		assert.equal(file.path, path.join(__dirname, 'fixture', 'test.tar'));
 		assert.equal(file.relative, 'test.tar');
 		cb();
 	});
@@ -45,7 +45,7 @@ it('should tar files in stream mode', function (cb) {
 	}
 
 	stream.on('data', function (file) {
-		assert.equal(file.path, path.join(__dirname, 'test.tar'));
+		assert.equal(file.path, path.join(__dirname, 'fixture', 'test.tar'));
 		assert.equal(file.relative, 'test.tar');
 		cb();
 	});
@@ -84,4 +84,5 @@ it('should output file.contents as a Stream', function (cb) {
 
 	stream.end();
 });
+
 

@@ -22,8 +22,10 @@ module.exports = function (filename, options) {
 			firstFile = file;
 		}
 
-		var relativePath = file.path.replace(file.cwd + path.sep, '');
-		archive.append(file.contents, assign({ name: relativePath }, options || {}));
+		archive.append(file.contents, assign({
+			name: file.relative.replace(/\\/g, '/')
+		}, options || {}));
+
 		cb();
 	}, function (cb) {
 		if (firstFile === undefined) {
@@ -34,10 +36,11 @@ module.exports = function (filename, options) {
 
 		this.push(new gutil.File({
 			cwd: firstFile.cwd,
-			base: firstFile.cwd,
-			path: path.join(firstFile.cwd, filename),
+			base: firstFile.base,
+			path: path.join(firstFile.base, filename),
 			contents: archive
 		}));
+
 		cb();
 	});
 };
