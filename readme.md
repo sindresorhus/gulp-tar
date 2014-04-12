@@ -18,7 +18,7 @@ var tar = require('gulp-tar');
 var gzip = require('gulp-gzip');
 
 gulp.task('default', function () {
-	gulp.src('src/*')
+	return gulp.src('src/*')
 		.pipe(tar('archive.tar'))
 		.pipe(gzip())
 		.pipe(gulp.dest('dist'));
