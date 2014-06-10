@@ -32,10 +32,10 @@
     "streams"
   ],
   "dependencies": {
-    "archiver": "^0.9.1",
+    "archiver": "^0.10.0",
     "gulp-util": "^2.2.0",
     "object-assign": "^0.3.1",
-    "through2": "^0.4.0"
+    "through2": "^0.5.1"
   },
   "devDependencies": {
     "gulp": "*",
