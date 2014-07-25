@@ -1,6 +1,6 @@
 {
   "name": "gulp-tar",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "description": "Create tarball from files",
   "license": "MIT",
   "repository": "sindresorhus/gulp-tar",
