@@ -15,7 +15,8 @@ module.exports = function (filename, options) {
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
-			return cb();
+			cb();
+			return;
 		}
 
 		if (firstFile === undefined) {
@@ -29,7 +30,8 @@ module.exports = function (filename, options) {
 		cb();
 	}, function (cb) {
 		if (firstFile === undefined) {
-			return cb();
+			cb();
+			return;
 		}
 
 		archive.finalize();

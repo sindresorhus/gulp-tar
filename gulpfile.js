@@ -1,6 +1,6 @@
 var gulp = require('gulp');
-var tar = require('./index');
 var gzip = require('gulp-gzip');
+var tar = require('./');
 
 gulp.task('default', function () {
 	// tar in buffer mode

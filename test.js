@@ -3,7 +3,7 @@ var path = require('path');
 var Stream = require('stream');
 var assert = require('assert');
 var gutil = require('gulp-util');
-var tar = require('./index');
+var tar = require('./');
 
 it('should tar files in buffer mode', function (cb) {
 	var stream = tar('test.tar');
@@ -84,5 +84,3 @@ it('should output file.contents as a Stream', function (cb) {
 
 	stream.end();
 });
-
-
