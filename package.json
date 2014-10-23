@@ -40,6 +40,8 @@
   "devDependencies": {
     "gulp": "*",
     "gulp-gzip": "0.0.8",
-    "mocha": "*"
+    "mocha": "*",
+    "tar-stream": "^1.0.2",
+    "vinyl-map": "^1.0.1"
   }
 }
