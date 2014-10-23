@@ -24,7 +24,7 @@ module.exports = function (filename, options) {
 		}
 
 		archive.append(file.contents, assign({
-			name: (file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : ''))
+			name: file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : '')
 		}, options || {}));
 
 		cb();
