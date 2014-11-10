@@ -32,7 +32,7 @@
     "streams"
   ],
   "dependencies": {
-    "archiver": "^0.11.0",
+    "archiver": "^0.12.0",
     "gulp-util": "^3.0.0",
     "object-assign": "^1.0.0",
     "through2": "^0.6.1"
