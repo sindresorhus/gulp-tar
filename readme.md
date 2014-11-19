@@ -12,19 +12,20 @@ $ npm install --save-dev gulp-tar
 
 ## Usage
 
+**NOTE**: To maitain the file's permissions please pass `{ stat: true }`, as the optional parameter for `gulp.src`.
+
 ```js
 var gulp = require('gulp');
 var tar = require('gulp-tar');
 var gzip = require('gulp-gzip');
 
 gulp.task('default', function () {
-	return gulp.src('src/*')
+	return gulp.src('src/*'/*, { stat: true } */)
 		.pipe(tar('archive.tar'))
 		.pipe(gzip())
 		.pipe(gulp.dest('dist'));
 });
 ```
-
 
 ## API
 
