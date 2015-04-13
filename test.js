@@ -3,9 +3,9 @@ var path = require('path');
 var Stream = require('stream');
 var assert = require('assert');
 var gutil = require('gulp-util');
-var tar = require('./');
 var tarStream = require('tar-stream');
-var map = require('vinyl-map');
+var vinylMap = require('vinyl-map');
+var tar = require('./');
 var Readable = Stream.Readable;
 
 it('should tar files in buffer mode', function (cb) {
@@ -38,14 +38,15 @@ it('should tar files in stream mode', function (cb) {
 	var stream = tar('test.tar');
 
 	var stringStream1 = new Stream();
-	stringStream1.pipe = function(dest) {
-		dest.write('hello world 1');
-	}
-
 	var stringStream2 = new Stream();
-	stringStream2.pipe = function(dest) {
+
+	stringStream1.pipe = function (dest) {
+		dest.write('hello world 1');
+	};
+
+	stringStream2.pipe = function (dest) {
 		dest.write('hello world 2');
-	}
+	};
 
 	stream.on('data', function (file) {
 		assert.equal(file.path, path.join(__dirname, 'fixture', 'test.tar'));
@@ -91,8 +92,9 @@ it('should output file.contents as a Stream', function (cb) {
 it('should include directories', function (cb) {
 	var stream = tar('test.tar');
 
-	var evaluate = map(function (code, filename) {
+	var evaluate = vinylMap(function (code, filename) {
 		var inspect = tarStream.extract();
+		var rs = new Readable();
 
 		inspect.on('entry', function (header, stream, callback) {
 			stream.on('end', function () {
@@ -100,18 +102,16 @@ it('should include directories', function (cb) {
 				assert.equal(header.name, 'fixture2/');
 				cb();
 			});
+
 			stream.resume();
 		});
 
-		var rs = Readable();
 		rs._read = function () {
 			rs.push(code.toString());
 		};
 
 		rs.pipe(inspect);
 	});
-
-	stream.pipe(evaluate);
 
 	stream.write(new gutil.File({
 		cwd: __dirname,
@@ -121,4 +121,5 @@ it('should include directories', function (cb) {
 	}));
 
 	stream.end();
+	stream.pipe(evaluate);
 });

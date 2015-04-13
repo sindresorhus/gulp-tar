@@ -2,7 +2,7 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var assign = require('object-assign');
+var objectAssign = require('object-assign');
 var archiver = require('archiver');
 
 module.exports = function (filename, options) {
@@ -23,7 +23,7 @@ module.exports = function (filename, options) {
 			firstFile = file;
 		}
 
-		archive.append(file.contents, assign({
+		archive.append(file.contents, objectAssign({
 			name: file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : ''),
 			mode: file.stat && file.stat.mode
 		}, options || {}));
