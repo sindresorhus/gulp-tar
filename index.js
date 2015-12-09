@@ -5,7 +5,7 @@ var through = require('through2');
 var objectAssign = require('object-assign');
 var archiver = require('archiver');
 
-module.exports = function (filename, options) {
+module.exports = function (filename, opts) {
 	if (!filename) {
 		throw new gutil.PluginError('gulp-tar', '`filename` required');
 	}
@@ -27,7 +27,7 @@ module.exports = function (filename, options) {
 			name: file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : ''),
 			mode: file.stat && file.stat.mode,
 			date: file.stat && file.stat.mtime ? file.stat.mtime : null
-		}, options || {}));
+		}, opts));
 
 		cb();
 	}, function (cb) {

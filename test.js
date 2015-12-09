@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 'use strict';
 var path = require('path');
 var Stream = require('stream');
@@ -92,11 +93,11 @@ it('should output file.contents as a Stream', function (cb) {
 it('should include directories', function (cb) {
 	var stream = tar('test.tar');
 
-	var evaluate = vinylMap(function (code, filename) {
+	var evaluate = vinylMap(function (code) {
 		var inspect = tarStream.extract();
 		var rs = new Readable();
 
-		inspect.on('entry', function (header, stream, callback) {
+		inspect.on('entry', function (header, stream) {
 			stream.on('end', function () {
 				assert.equal(header.type, 'directory');
 				assert.equal(header.name, 'fixture2/');

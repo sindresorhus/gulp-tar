@@ -13,11 +13,11 @@ $ npm install --save-dev gulp-tar
 ## Usage
 
 ```js
-var gulp = require('gulp');
-var tar = require('gulp-tar');
-var gzip = require('gulp-gzip');
+const gulp = require('gulp');
+const tar = require('gulp-tar');
+const gzip = require('gulp-gzip');
 
-gulp.task('default', function () {
+gulp.task('default', () => {
 	return gulp.src('src/*')
 		.pipe(tar('archive.tar'))
 		.pipe(gzip())
@@ -28,13 +28,13 @@ gulp.task('default', function () {
 
 ## API
 
-### tar(filename, options)
+### tar(filename, [options])
 
 #### filename
 
 Type: `string`
 
-filename for the output tar archive
+Filename for the output tar archive.
 
 #### options
 
