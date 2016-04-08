@@ -1,5 +1,5 @@
-/* eslint-env mocha */
 'use strict';
+/* eslint-env mocha */
 var path = require('path');
 var Stream = require('stream');
 var assert = require('assert');

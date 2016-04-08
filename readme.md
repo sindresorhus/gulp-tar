@@ -17,12 +17,12 @@ const gulp = require('gulp');
 const tar = require('gulp-tar');
 const gzip = require('gulp-gzip');
 
-gulp.task('default', () => {
-	return gulp.src('src/*')
+gulp.task('default', () =>
+	gulp.src('src/*')
 		.pipe(tar('archive.tar'))
 		.pipe(gzip())
-		.pipe(gulp.dest('dist'));
-});
+		.pipe(gulp.dest('dist'))
+);
 ```
 
 
@@ -45,4 +45,4 @@ Default file headers passed to [tar-stream](https://github.com/mafintosh/tar-str
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)
