@@ -41,7 +41,7 @@ module.exports = function (filename, opts) {
 		this.push(new gutil.File({
 			cwd: firstFile.cwd,
 			base: firstFile.base,
-			path: path.join(firstFile.base, filename),
+			path: path.join(firstFile.base, typeof filename === 'function' ? filename(firstFile) : filename),
 			contents: archive
 		}));
 

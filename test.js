@@ -7,6 +7,7 @@ var gutil = require('gulp-util');
 var tarStream = require('tar-stream');
 var vinylMap = require('vinyl-map');
 var tar = require('./');
+
 var Readable = Stream.Readable;
 
 it('should tar files in buffer mode', function (cb) {
@@ -123,4 +124,25 @@ it('should include directories', function (cb) {
 
 	stream.end();
 	stream.pipe(evaluate);
+});
+
+it('should allow filename to be defined by a function', function (cb) {
+	var stream = tar(function () {
+		return 'test.tar';
+	});
+
+	stream.on('data', function (file) {
+		assert.equal(file.path, path.join(__dirname, 'fixture', 'test.tar'));
+		assert.equal(file.relative, 'test.tar');
+		cb();
+	});
+
+	stream.write(new gutil.File({
+		cwd: __dirname,
+		base: path.join(__dirname, 'fixture'),
+		path: path.join(__dirname, 'fixture/fixture.txt'),
+		contents: new Buffer('hello world')
+	}));
+
+	stream.end();
 });
