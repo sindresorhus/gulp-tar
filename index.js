@@ -42,7 +42,6 @@ module.exports = function (filename, opts) {
 			cwd: firstFile.cwd,
 			base: firstFile.base,
 			path: path.join(firstFile.base, typeof filename == 'function' ? filename(firstFile) : filename),
-			//path: path.join(firstFile.base, filename),
 			contents: archive
 		}));
 
