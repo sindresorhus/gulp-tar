@@ -40,7 +40,7 @@ Filename for the output tar archive.
 
 Type: `object`
 
-Default file headers passed to [tar-stream](https://github.com/mafintosh/tar-stream).
+Default options passed to [archiver](https://github.com/archiverjs/node-archiver).
 
 
 ## License
