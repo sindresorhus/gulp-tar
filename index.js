@@ -11,7 +11,7 @@ module.exports = function (filename, opts) {
 	}
 
 	var firstFile;
-	var archive = archiver('tar');
+	var archive = archiver('tar', opts);
 
 	return through.obj(function (file, enc, cb) {
 		if (file.relative === '') {
@@ -27,7 +27,7 @@ module.exports = function (filename, opts) {
 			name: file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : ''),
 			mode: file.stat && file.stat.mode,
 			date: file.stat && file.stat.mtime ? file.stat.mtime : null
-		}, opts));
+		}));
 
 		cb();
 	}, function (cb) {
