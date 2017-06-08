@@ -1,19 +1,18 @@
 'use strict';
-var path = require('path');
-var gutil = require('gulp-util');
-var through = require('through2');
-var objectAssign = require('object-assign');
-var archiver = require('archiver');
+const path = require('path');
+const gutil = require('gulp-util');
+const through = require('through2');
+const archiver = require('archiver');
 
-module.exports = function (filename, opts) {
+module.exports = (filename, opts) => {
 	if (!filename) {
 		throw new gutil.PluginError('gulp-tar', '`filename` required');
 	}
 
-	var firstFile;
-	var archive = archiver('tar', opts);
+	let firstFile;
+	const archive = archiver('tar', opts);
 
-	return through.obj(function (file, enc, cb) {
+	return through.obj((file, enc, cb) => {
 		if (file.relative === '') {
 			cb();
 			return;
@@ -23,7 +22,7 @@ module.exports = function (filename, opts) {
 			firstFile = file;
 		}
 
-		archive.append(file.contents, objectAssign({
+		archive.append(file.contents, Object.assign({
 			name: file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : ''),
 			mode: file.stat && file.stat.mode,
 			date: file.stat && file.stat.mtime ? file.stat.mtime : null

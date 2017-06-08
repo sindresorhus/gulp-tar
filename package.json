@@ -1,48 +1,47 @@
 {
-  "name": "gulp-tar",
-  "version": "1.9.0",
-  "description": "Create tarball from files",
-  "license": "MIT",
-  "repository": "sindresorhus/gulp-tar",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "scripts": {
-    "test": "xo && mocha"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "gulpplugin",
-    "tar",
-    "tarball",
-    "archive",
-    "archiver",
-    "compress",
-    "compression",
-    "file",
-    "files",
-    "stream",
-    "streams"
-  ],
-  "dependencies": {
-    "archiver": "^1.0.0",
-    "gulp-util": "^3.0.0",
-    "object-assign": "^4.0.1",
-    "through2": "^2.0.0"
-  },
-  "devDependencies": {
-    "gulp": "*",
-    "gulp-gzip": "^1.2.0",
-    "mocha": "*",
-    "tar-stream": "^1.0.2",
-    "vinyl-map": "^1.0.1",
-    "xo": "*"
-  }
+	"name": "gulp-tar",
+	"version": "1.9.0",
+	"description": "Create tarball from files",
+	"license": "MIT",
+	"repository": "sindresorhus/gulp-tar",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"test": "xo && mocha"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"gulpplugin",
+		"tar",
+		"tarball",
+		"archive",
+		"archiver",
+		"compress",
+		"compression",
+		"file",
+		"files",
+		"stream",
+		"streams"
+	],
+	"dependencies": {
+		"archiver": "^1.0.0",
+		"gulp-util": "^3.0.0",
+		"through2": "^2.0.0"
+	},
+	"devDependencies": {
+		"gulp": "*",
+		"gulp-gzip": "^1.2.0",
+		"mocha": "*",
+		"tar-stream": "^1.0.2",
+		"vinyl-map": "^1.0.1",
+		"xo": "*"
+	}
 }
