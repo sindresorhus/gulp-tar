@@ -11,7 +11,7 @@ module.exports = function (filename, opts) {
 	}
 
 	var firstFile;
-	var archive = archiver('tar');
+	var archive = archiver('tar', opts);
 
 	return through.obj(function (file, enc, cb) {
 		if (file.relative === '') {
