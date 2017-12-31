@@ -1,16 +1,17 @@
 'use strict';
 const path = require('path');
-const gutil = require('gulp-util');
 const through = require('through2');
 const archiver = require('archiver');
+const PluginError = require('plugin-error');
+const Vinyl = require('vinyl');
 
-module.exports = (filename, opts) => {
+module.exports = (filename, options) => {
 	if (!filename) {
-		throw new gutil.PluginError('gulp-tar', '`filename` required');
+		throw new PluginError('gulp-tar', '`filename` required');
 	}
 
 	let firstFile;
-	const archive = archiver('tar', opts);
+	const archive = archiver('tar', options);
 
 	return through.obj((file, enc, cb) => {
 		if (file.relative === '') {
@@ -26,7 +27,7 @@ module.exports = (filename, opts) => {
 			name: file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : ''),
 			mode: file.stat && file.stat.mode,
 			date: file.stat && file.stat.mtime ? file.stat.mtime : null
-		}, opts));
+		}, options));
 
 		cb();
 	}, function (cb) {
@@ -37,7 +38,7 @@ module.exports = (filename, opts) => {
 
 		archive.finalize();
 
-		this.push(new gutil.File({
+		this.push(new Vinyl({
 			cwd: firstFile.cwd,
 			base: firstFile.base,
 			path: path.join(firstFile.base, filename),
