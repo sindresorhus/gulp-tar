@@ -12,8 +12,8 @@ it('should tar files in buffer mode', cb => {
 	const stream = tar('test.tar');
 
 	stream.on('data', file => {
-		assert.equal(file.path, path.join(__dirname, 'fixture', 'test.tar'));
-		assert.equal(file.relative, 'test.tar');
+		assert.strictEqual(file.path, path.join(__dirname, 'fixture', 'test.tar'));
+		assert.strictEqual(file.relative, 'test.tar');
 		cb();
 	});
 
@@ -49,8 +49,8 @@ it('should tar files in stream mode', cb => {
 	};
 
 	stream.on('data', file => {
-		assert.equal(file.path, path.join(__dirname, 'fixture', 'test.tar'));
-		assert.equal(file.relative, 'test.tar');
+		assert.strictEqual(file.path, path.join(__dirname, 'fixture', 'test.tar'));
+		assert.strictEqual(file.relative, 'test.tar');
 	});
 
 	stream.on('end', cb);
@@ -99,8 +99,8 @@ it.skip('should include directories', cb => {
 
 		inspect.on('entry', (header, stream) => {
 			stream.on('end', () => {
-				assert.equal(header.type, 'directory');
-				assert.equal(header.name, 'fixture2/');
+				assert.strictEqual(header.type, 'directory');
+				assert.strictEqual(header.name, 'fixture2/');
 				cb();
 			});
 
