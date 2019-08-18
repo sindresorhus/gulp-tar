@@ -13,9 +13,9 @@ module.exports = (filename, options) => {
 	let firstFile;
 	const archive = archiver('tar', options);
 
-	return through.obj((file, enc, cb) => {
+	return through.obj((file, encoding, callback) => {
 		if (file.relative === '') {
-			cb();
+			callback();
 			return;
 		}
 
@@ -23,16 +23,17 @@ module.exports = (filename, options) => {
 			firstFile = file;
 		}
 
-		archive.append(file.contents, Object.assign({
+		archive.append(file.contents, {
 			name: file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : ''),
 			mode: file.stat && file.stat.mode,
-			date: file.stat && file.stat.mtime ? file.stat.mtime : null
-		}, options));
+			date: file.stat && file.stat.mtime ? file.stat.mtime : null,
+			...options
+		});
 
-		cb();
-	}, function (cb) {
+		callback();
+	}, function (callback) {
 		if (firstFile === undefined) {
-			cb();
+			callback();
 			return;
 		}
 
@@ -45,6 +46,6 @@ module.exports = (filename, options) => {
 			contents: archive
 		}));
 
-		cb();
+		callback();
 	});
 };

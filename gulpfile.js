@@ -3,7 +3,7 @@ const gulp = require('gulp');
 const gzip = require('gulp-gzip');
 const tar = require('.');
 
-gulp.task('default', () => {
+exports.default = () => {
 	// Tar in buffer mode
 	gulp.src('fixture/fixture.txt')
 		.pipe(tar('test1.tar'))
@@ -30,4 +30,4 @@ gulp.task('default', () => {
 	gulp.src('fixture/fixture.txt')
 		.pipe(tar('test_options.tar', {mtime: 0}))
 		.pipe(gulp.dest('dest'));
-});
+};

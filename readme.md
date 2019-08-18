@@ -1,6 +1,6 @@
 # gulp-tar [![Build Status](https://travis-ci.org/sindresorhus/gulp-tar.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-tar)
 
-> Create [tarball](http://en.wikipedia.org/wiki/Tar_(computing)) from files
+> Create [tarball](https://en.wikipedia.org/wiki/Tar_(computing)) from files
 
 
 ## Install
@@ -17,7 +17,7 @@ const gulp = require('gulp');
 const tar = require('gulp-tar');
 const gzip = require('gulp-gzip');
 
-gulp.task('default', () =>
+exports.default = () => (
 	gulp.src('src/*')
 		.pipe(tar('archive.tar'))
 		.pipe(gzip())
@@ -28,7 +28,7 @@ gulp.task('default', () =>
 
 ## API
 
-### tar(filename, [options])
+### tar(filename, options?)
 
 #### filename
 
@@ -38,11 +38,6 @@ Filename for the output tar archive.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 Default options passed to [Archiver](https://github.com/archiverjs/node-archiver)'s [constructor](https://archiverjs.com/docs/Archiver.html) and merged into the [data](https://archiverjs.com/docs/global.html#TarEntryData) passed to its [`append`](https://archiverjs.com/docs/Archiver.html#append) method.
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

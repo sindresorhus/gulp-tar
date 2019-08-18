@@ -8,13 +8,13 @@ const vinylMap = require('vinyl-map');
 const Vinyl = require('vinyl');
 const tar = require('.');
 
-it('should tar files in buffer mode', cb => {
+it('should tar files in buffer mode', callback => {
 	const stream = tar('test.tar');
 
 	stream.on('data', file => {
 		assert.strictEqual(file.path, path.join(__dirname, 'fixture', 'test.tar'));
 		assert.strictEqual(file.relative, 'test.tar');
-		cb();
+		callback();
 	});
 
 	stream.write(new Vinyl({
@@ -34,7 +34,7 @@ it('should tar files in buffer mode', cb => {
 	stream.end();
 });
 
-it('should tar files in stream mode', cb => {
+it('should tar files in stream mode', callback => {
 	const stream = tar('test.tar');
 
 	const stringStream1 = new Stream.Readable();
@@ -53,7 +53,7 @@ it('should tar files in stream mode', cb => {
 		assert.strictEqual(file.relative, 'test.tar');
 	});
 
-	stream.on('end', cb);
+	stream.on('end', callback);
 
 	stream.write(new Vinyl({
 		cwd: __dirname,
@@ -72,12 +72,12 @@ it('should tar files in stream mode', cb => {
 	stream.end();
 });
 
-it('should output file.contents as a Stream', cb => {
+it('should output file.contents as a Stream', callback => {
 	const stream = tar('test.tar');
 
 	stream.on('data', file => {
 		assert(file.contents instanceof Stream, 'File contents should be a Stream object');
-		cb();
+		callback();
 	});
 
 	stream.write(new Vinyl({
@@ -90,7 +90,7 @@ it('should output file.contents as a Stream', cb => {
 	stream.end();
 });
 
-it.skip('should include directories', cb => {
+it.skip('should include directories', callback => {
 	const stream = tar('test.tar');
 
 	const evaluate = vinylMap(code => {
@@ -101,7 +101,7 @@ it.skip('should include directories', cb => {
 			stream.on('end', () => {
 				assert.strictEqual(header.type, 'directory');
 				assert.strictEqual(header.name, 'fixture2/');
-				cb();
+				callback();
 			});
 
 			stream.resume();
