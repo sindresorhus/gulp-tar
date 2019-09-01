@@ -13,9 +13,9 @@
 		"node": ">=8"
 	},
 	"scripts": {
-		"test": "xo && mocha",
+		"test": "xo && mocha *test.js",
 		"lint-fix": "xo --fix",
-		"cov": "nyc --reporter=html mocha"
+		"cov": "nyc --reporter=html mocha *test.js"
 	},
 	"files": [
 		"index.js"
@@ -46,7 +46,6 @@
 		"nyc": "^14.1.1",
 		"rimraf": "^3.0.0",
 		"tar-fs": "^2.0.0",
-		"tar-stream": "^2.1.0",
 		"xo": "^0.24.0"
 	},
 	"peerDependencies": {

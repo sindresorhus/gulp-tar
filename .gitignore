@@ -2,3 +2,5 @@ node_modules
 yarn.lock
 /dest
 .vscode
+.nyc_output
+coverage

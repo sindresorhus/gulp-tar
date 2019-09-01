@@ -3,7 +3,6 @@
 const path = require('path');
 const Stream = require('stream');
 const assert = require('assert');
-const tarStream = require('tar-stream');
 const Vinyl = require('vinyl');
 const tar = require('.');
 
