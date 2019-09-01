@@ -4,7 +4,6 @@ const path = require('path');
 const Stream = require('stream');
 const assert = require('assert');
 const tarStream = require('tar-stream');
-const vinylMap = require('vinyl-map');
 const Vinyl = require('vinyl');
 const tar = require('.');
 
@@ -90,36 +89,3 @@ it('should output file.contents as a Stream', callback => {
 	stream.end();
 });
 
-it.skip('should include directories', callback => {
-	const stream = tar('test.tar');
-
-	const evaluate = vinylMap(code => {
-		const inspect = tarStream.extract();
-		const rs = new Stream.Readable();
-
-		inspect.on('entry', (header, stream) => {
-			stream.on('end', () => {
-				assert.strictEqual(header.type, 'directory');
-				assert.strictEqual(header.name, 'fixture2/');
-				callback();
-			});
-
-			stream.resume();
-		});
-
-		rs._read = () => {
-			rs.push(code.toString());
-		};
-
-		rs.pipe(inspect);
-	});
-
-	stream.pipe(evaluate);
-
-	stream.end(new Vinyl({
-		cwd: __dirname,
-		base: path.join(__dirname, 'fixture'),
-		path: path.join(__dirname, 'fixture/fixture2'),
-		contents: null
-	}));
-});
