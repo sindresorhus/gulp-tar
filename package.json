@@ -14,8 +14,7 @@
 	},
 	"scripts": {
 		"test": "xo && mocha *test.js",
-		"lint-fix": "xo --fix",
-		"cov": "nyc --reporter=html mocha *test.js"
+		"coverage": "nyc --reporter=html mocha *test.js"
 	},
 	"files": [
 		"index.js"
