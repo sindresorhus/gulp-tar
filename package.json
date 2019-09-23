@@ -13,7 +13,8 @@
 		"node": ">=8"
 	},
 	"scripts": {
-		"test": "xo && mocha"
+		"test": "xo && mocha *test.js",
+		"coverage": "nyc --reporter=html mocha *test.js"
 	},
 	"files": [
 		"index.js"
@@ -41,8 +42,9 @@
 		"gulp": "^4.0.2",
 		"gulp-gzip": "^1.2.0",
 		"mocha": "^6.2.0",
-		"tar-stream": "^2.1.0",
-		"vinyl-map": "^1.0.1",
+		"nyc": "^14.1.1",
+		"rimraf": "^3.0.0",
+		"tar-fs": "^2.0.0",
 		"xo": "^0.24.0"
 	},
 	"peerDependencies": {
