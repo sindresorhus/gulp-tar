@@ -13,8 +13,7 @@
 		"node": ">=8"
 	},
 	"scripts": {
-		"test": "xo && mocha *test.js",
-		"coverage": "nyc --reporter=html mocha *test.js"
+		"test": "xo && nyc mocha"
 	},
 	"files": [
 		"index.js"

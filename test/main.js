@@ -4,7 +4,7 @@ const path = require('path');
 const Stream = require('stream');
 const assert = require('assert');
 const Vinyl = require('vinyl');
-const tar = require('.');
+const tar = require('..');
 
 it('should tar files in buffer mode', callback => {
 	const stream = tar('test.tar');

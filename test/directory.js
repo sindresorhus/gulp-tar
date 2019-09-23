@@ -7,19 +7,10 @@ const gulp = require('gulp');
 const gulpZip = require('gulp-gzip');
 const tarfs = require('tar-fs');
 const rimraf = require('rimraf');
+const gulpTar = require('..');
 
-const gulpTar = require('.');
-
-it('should include dirs', done => {
-	const expectedNames = ['dir-fixture/inside.txt', 'fixture.txt'];
-	gulp
-		.src('fixture/**/*')
-		.pipe(gulpTar('archive.tar'))
-		.pipe(gulpZip())
-		.pipe(gulp.dest('dest'))
-		.on('finish', onTargz);
-
-	function onTargz() {
+it('should include directories', done => {
+	const onTargz = () => {
 		const filename = 'archive.tar.gz';
 		const fullPath = path.join(__dirname, 'dest', filename);
 		const rs = createReadStream(fullPath);
@@ -35,8 +26,23 @@ it('should include dirs', done => {
 				})
 			)
 			.on('finish', () => {
-				['dest', 'dest-out'].map(dir => rimraf.sync(path.join(__dirname, dir)));
+				for (const directory of ['dest', 'dest-out']) {
+					rimraf.sync(path.join(__dirname, directory));
+				}
+
 				done();
 			});
-	}
+	};
+
+	const expectedNames = [
+		'dir-fixture/inside.txt',
+		'fixture.txt'
+	];
+
+	gulp
+		.src('fixture/**/*', {cwd: __dirname})
+		.pipe(gulpTar('archive.tar'))
+		.pipe(gulpZip())
+		.pipe(gulp.dest('dest', {cwd: __dirname}))
+		.on('finish', onTargz);
 });
