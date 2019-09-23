@@ -17,4 +17,3 @@ it('should fail on missing filename', done => {
 	throws(() => gulpTar(), /`filename` required/);
 	done();
 });
-
