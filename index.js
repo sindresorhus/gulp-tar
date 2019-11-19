@@ -23,12 +23,18 @@ module.exports = (filename, options) => {
 			firstFile = file;
 		}
 
-		archive.append(file.contents, {
-			name: file.relative.replace(/\\/g, '/') + (file.isNull() ? '/' : ''),
-			mode: file.stat && file.stat.mode,
-			date: file.stat && file.stat.mtime ? file.stat.mtime : null,
-			...options
-		});
+		const nameNormalized = file.relative.replace(/\\/g, '/');
+
+		if (file.isSymbolic()) {
+			archive.symlink(nameNormalized, file.symlink);
+		} else {
+			archive.append(file.contents, {
+				name: nameNormalized + (file.isNull() ? '/' : ''),
+				mode: file.stat && file.stat.mode,
+				date: file.stat && file.stat.mtime ? file.stat.mtime : null,
+				...options
+			});
+		}
 
 		callback();
 	}, function (callback) {
