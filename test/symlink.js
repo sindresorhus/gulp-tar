@@ -47,10 +47,12 @@ it('should include symlink', done => {
 		{name: 'fixture/dir-fixture/', type: 'directory'}
 	];
 
-	// Const expectedSymlinks = [];
-
 	vinylFs
-		.src(['fixture/**/*', 'fixture/.symlink/**/*'], {cwd: __dirname, base: __dirname, resolveSymlinks: false})
+		.src(['fixture/**/*', 'fixture/.symlink/**/*'], {
+			cwd: __dirname,
+			base: __dirname,
+			resolveSymlinks: false
+		})
 		.pipe(gulpTar('archive.tar'))
 		.pipe(gulpZip())
 		.pipe(gulp.dest('dest', {cwd: __dirname}))
