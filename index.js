@@ -25,7 +25,7 @@ module.exports = (filename, options) => {
 
 		const nameNormalized = file.relative.replace(/\\/g, '/');
 
-		if (file.isSymbolic()) {
+		if (typeof file.isSymbolic === 'function' && file.isSymbolic()) {
 			archive.symlink(nameNormalized, file.symlink);
 		} else {
 			archive.append(file.contents, {
