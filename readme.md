@@ -1,4 +1,4 @@
-# gulp-tar [![Build Status](https://travis-ci.org/sindresorhus/gulp-tar.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-tar)
+# gulp-tar
 
 > Create [tarball](https://en.wikipedia.org/wiki/Tar_(computing)) from files
 
