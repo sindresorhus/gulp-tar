@@ -1,21 +1,18 @@
-'use strict';
-const path = require('path');
-const through = require('through2');
-const archiver = require('archiver');
-const PluginError = require('plugin-error');
-const Vinyl = require('vinyl');
+import path from 'node:path';
+import archiver from 'archiver';
+import Vinyl from 'vinyl';
+import {gulpPlugin} from 'gulp-plugin-extras';
 
-module.exports = (filename, options) => {
+export default function gulpTar(filename, options) {
 	if (!filename) {
-		throw new PluginError('gulp-tar', '`filename` required');
+		throw new Error('gulp-tar: `filename` required');
 	}
 
 	let firstFile;
 	const archive = archiver('tar', options);
 
-	return through.obj((file, encoding, callback) => {
+	return gulpPlugin('gulp-tar', async file => {
 		if (file.relative === '') {
-			callback();
 			return;
 		}
 
@@ -23,7 +20,7 @@ module.exports = (filename, options) => {
 			firstFile = file;
 		}
 
-		const nameNormalized = file.relative.replace(/\\/g, '/');
+		const nameNormalized = file.relative.replaceAll('\\', '/');
 
 		if (file.isSymbolic()) {
 			archive.symlink(nameNormalized, file.symlink);
@@ -32,26 +29,24 @@ module.exports = (filename, options) => {
 				name: nameNormalized + (file.isNull() ? '/' : ''),
 				mode: file.stat && file.stat.mode,
 				date: file.stat && file.stat.mtime ? file.stat.mtime : null,
-				...options
+				...options,
 			});
 		}
+	}, {
+		supportsAnyType: true,
+		async * onFinish() {
+			if (firstFile === undefined) {
+				return;
+			}
 
-		callback();
-	}, function (callback) {
-		if (firstFile === undefined) {
-			callback();
-			return;
-		}
+			archive.finalize();
 
-		archive.finalize();
-
-		this.push(new Vinyl({
-			cwd: firstFile.cwd,
-			base: firstFile.base,
-			path: path.join(firstFile.base, filename),
-			contents: archive
-		}));
-
-		callback();
+			yield new Vinyl({
+				cwd: firstFile.cwd,
+				base: firstFile.base,
+				path: path.join(firstFile.base, filename),
+				contents: archive,
+			});
+		},
 	});
-};
+}

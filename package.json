@@ -4,16 +4,19 @@
 	"description": "Create tarball from files",
 	"license": "MIT",
 	"repository": "sindresorhus/gulp-tar",
+	"funding": "https://github.com/sponsors/sindresorhus",
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
+	"exports": "./index.js",
 	"engines": {
-		"node": ">=8"
+		"node": ">=18"
 	},
 	"scripts": {
-		"test": "xo && nyc mocha"
+		"test": "xo && ava"
 	},
 	"files": [
 		"index.js"
@@ -32,20 +35,19 @@
 		"streams"
 	],
 	"dependencies": {
-		"archiver": "^3.1.1",
-		"plugin-error": "^1.0.1",
-		"through2": "^3.0.1",
-		"vinyl": "^2.1.0"
+		"archiver": "^6.0.1",
+		"gulp-plugin-extras": "^0.3.0",
+		"vinyl": "^3.0.0"
 	},
 	"devDependencies": {
+		"ava": "^5.3.1",
 		"gulp": "^4.0.2",
-		"gulp-gzip": "^1.2.0",
-		"vinyl-fs": "^3.0.3",
-		"mocha": "^6.2.0",
-		"nyc": "^14.1.1",
-		"rimraf": "^3.0.0",
-		"tar-fs": "^2.0.0",
-		"xo": "^0.24.0"
+		"gulp-gzip": "^1.4.2",
+		"p-event": "^6.0.0",
+		"rimraf": "^5.0.5",
+		"tar-fs": "^3.0.4",
+		"vinyl-fs": "^4.0.0",
+		"xo": "^0.56.0"
 	},
 	"peerDependencies": {
 		"gulp": ">=4"
@@ -54,5 +56,8 @@
 		"gulp": {
 			"optional": true
 		}
+	},
+	"ava": {
+		"serial": true
 	}
 }

@@ -1,90 +1,82 @@
-'use strict';
-/* eslint-env mocha */
-const path = require('path');
-const Stream = require('stream');
-const assert = require('assert');
-const Vinyl = require('vinyl');
-const tar = require('..');
+import {Buffer} from 'node:buffer';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {Readable as Stream} from 'node:stream';
+import test from 'ava';
+import {pEvent} from 'p-event';
+import Vinyl from 'vinyl';
+import tar from '../index.js';
 
-it('should tar files in buffer mode', callback => {
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+test('should tar files in buffer mode', async t => {
 	const stream = tar('test.tar');
 
-	stream.on('data', file => {
-		assert.strictEqual(file.path, path.join(__dirname, 'fixture', 'test.tar'));
-		assert.strictEqual(file.relative, 'test.tar');
-		callback();
-	});
-
+	const onData = pEvent(stream, 'data');
 	stream.write(new Vinyl({
 		cwd: __dirname,
 		base: path.join(__dirname, 'fixture'),
 		path: path.join(__dirname, 'fixture/fixture.txt'),
-		contents: Buffer.from('hello world 1')
+		contents: Buffer.from('hello world 1'),
 	}));
-
 	stream.write(new Vinyl({
 		cwd: __dirname,
 		base: path.join(__dirname, 'fixture'),
 		path: path.join(__dirname, 'fixture/fixture.txt'),
-		contents: Buffer.from('hello world 2')
+		contents: Buffer.from('hello world 2'),
 	}));
-
 	stream.end();
+
+	const file = await onData;
+	t.is(file.path, path.join(__dirname, 'fixture', 'test.tar'));
+	t.is(file.relative, 'test.tar');
 });
 
-it('should tar files in stream mode', callback => {
+test('should tar files in stream mode', async t => {
 	const stream = tar('test.tar');
 
-	const stringStream1 = new Stream.Readable();
-	const stringStream2 = new Stream.Readable();
+	const stringStream1 = new Stream();
+	const stringStream2 = new Stream();
+	stringStream1._read = () => {};
+	stringStream2._read = () => {};
+	stringStream1.push('hello world 1');
+	stringStream2.push('hello world 2');
 
-	stringStream1.pipe = dest => {
-		dest.write('hello world 1');
-	};
-
-	stringStream2.pipe = dest => {
-		dest.write('hello world 2');
-	};
-
-	stream.on('data', file => {
-		assert.strictEqual(file.path, path.join(__dirname, 'fixture', 'test.tar'));
-		assert.strictEqual(file.relative, 'test.tar');
-	});
-
-	stream.on('end', callback);
-
+	const onData = pEvent(stream, 'data');
+	const onEnd = pEvent(stream, 'end');
 	stream.write(new Vinyl({
 		cwd: __dirname,
 		base: path.join(__dirname, 'fixture'),
 		path: path.join(__dirname, 'fixture/fixture.txt'),
-		contents: stringStream1
+		contents: stringStream1,
 	}));
-
 	stream.write(new Vinyl({
 		cwd: __dirname,
 		base: path.join(__dirname, 'fixture'),
 		path: path.join(__dirname, 'fixture/fixture.txt'),
-		contents: stringStream2
+		contents: stringStream2,
 	}));
-
 	stream.end();
+
+	const file = await onData;
+	t.is(file.path, path.join(__dirname, 'fixture', 'test.tar'));
+	t.is(file.relative, 'test.tar');
+	await onEnd;
 });
 
-it('should output file.contents as a Stream', callback => {
+test('should output file.contents as a Stream', async t => {
 	const stream = tar('test.tar');
 
-	stream.on('data', file => {
-		assert(file.contents instanceof Stream, 'File contents should be a Stream object');
-		callback();
-	});
-
+	const onData = pEvent(stream, 'data');
 	stream.write(new Vinyl({
 		cwd: __dirname,
 		base: path.join(__dirname, 'fixture'),
 		path: path.join(__dirname, 'fixture/fixture.txt'),
-		contents: Buffer.from('hello world')
+		contents: Buffer.from('hello world'),
 	}));
+	stream.end();
 
+	const file = await onData;
+	t.true(file.contents.readable);
 	stream.end();
 });
-

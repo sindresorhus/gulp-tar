@@ -2,29 +2,26 @@
 
 > Create [tarball](https://en.wikipedia.org/wiki/Tar_(computing)) from files
 
-
 ## Install
 
+```sh
+npm install --save-dev gulp-tar
 ```
-$ npm install --save-dev gulp-tar
-```
-
 
 ## Usage
 
 ```js
-const gulp = require('gulp');
-const tar = require('gulp-tar');
-const gzip = require('gulp-gzip');
+import gulp from 'gulp';
+import tar from 'gulp-tar';
+import gzip from 'gulp-gzip';
 
-exports.default = () => (
+export default () => (
 	gulp.src('src/*')
 		.pipe(tar('archive.tar'))
 		.pipe(gzip())
 		.pipe(gulp.dest('dist'))
 );
 ```
-
 
 ## API
 
@@ -34,7 +31,7 @@ exports.default = () => (
 
 Type: `string`
 
-Filename for the output tar archive.
+The filename for the output tar archive.
 
 #### options
 

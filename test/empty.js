@@ -1,22 +1,27 @@
-/* eslint-env mocha */
-const {throws} = require('assert');
-const gulp = require('gulp');
-const gulpZip = require('gulp-gzip');
-const gulpTar = require('..');
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import test from 'ava';
+import {pEvent} from 'p-event';
+import gulp from 'gulp';
+import gulpZip from 'gulp-gzip';
+import gulpTar from '../index.js';
 
-it('should not fail on empty directory', done => {
-	gulp
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+test('should not fail on empty directory', async t => {
+	const stream = gulp
 		.src('fixture/.empty/**/*', {cwd: __dirname})
 		.pipe(gulpTar('archive.tar'))
 		.pipe(gulpZip())
-		.pipe(gulp.dest('dest', {cwd: __dirname}))
-		.on('finish', () => {
-			done();
-		});
+		.pipe(gulp.dest('dest', {cwd: __dirname}));
+
+	await t.notThrowsAsync(pEvent(stream, 'finish'));
 });
 
-it('should fail on missing filename', () => {
-	throws(() => {
+test('should fail on missing filename', t => {
+	t.throws(() => {
 		gulpTar();
-	}, /`filename` required/);
+	}, {
+		message: /`filename` required/,
+	});
 });

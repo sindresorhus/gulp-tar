@@ -1,60 +1,64 @@
-/* eslint-env mocha */
-const {createReadStream} = require('fs');
-const path = require('path');
-const zlib = require('zlib');
-const assert = require('assert');
-const gulp = require('gulp');
-const gulpZip = require('gulp-gzip');
-const tarfs = require('tar-fs');
-const rimraf = require('rimraf');
-const vinylFs = require('vinyl-fs');
-const gulpTar = require('..');
+import {createReadStream} from 'node:fs';
+import path from 'node:path';
+import {createGunzip} from 'node:zlib';
+import {fileURLToPath} from 'node:url';
+import test from 'ava';
+import {pEvent} from 'p-event';
+import tarfs from 'tar-fs';
+import {rimraf} from 'rimraf';
+import vinylFs from 'vinyl-fs';
+import gulp from 'gulp';
+import gulpZip from 'gulp-gzip';
+import gulpTar from '../index.js';
 
-it('should include symlink', done => {
-	const onTargz = () => {
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+test('should include symlink', async t => {
+	const onTargz = async () => {
 		const filename = 'archive.tar.gz';
 		const fullPath = path.join(__dirname, 'dest', filename);
 		const rs = createReadStream(fullPath);
 
-		rs.pipe(zlib.createGunzip())
-			.pipe(
-				tarfs.extract(path.join(__dirname, 'dest-out'), {
-					map: header => {
-						const expected = expectedNames.pop();
-						assert.strictEqual(header.name, expected.name);
-						assert.strictEqual(header.type, expected.type);
-						if (header.type === 'symlink') {
-							assert.strictEqual(header.linkname, expected.linkname);
-						}
+		const expectedHeaders = {
+			'fixture/.symlink/symlink.txt': {type: 'symlink', linkname: '../fixture.txt'},
+			'fixture/dir-fixture/inside.txt': {type: 'file'},
+			'fixture/fixture.txt': {type: 'file'},
+			'fixture/dir-fixture/': {type: 'directory'},
+		};
 
-						return header;
+		const extractStream = tarfs.extract(path.join(__dirname, 'dest-out'), {
+			map(header) {
+				const expected = expectedHeaders[header.name];
+				if (expected) {
+					t.is(header.type, expected.type);
+					if (header.type === 'symlink') {
+						t.is(header.linkname, expected.linkname);
 					}
-				})
-			)
-			.on('finish', () => {
-				for (const directory of ['dest', 'dest-out']) {
-					rimraf.sync(path.join(__dirname, directory));
 				}
 
-				done();
-			});
+				return header;
+			},
+		});
+
+		const finalStream = rs.pipe(createGunzip()).pipe(extractStream);
+
+		await pEvent(finalStream, 'finish');
+
+		for (const directory of ['dest', 'dest-out']) {
+			await rimraf(path.join(__dirname, directory)); // eslint-disable-line no-await-in-loop
+		}
 	};
 
-	const expectedNames = [
-		{name: 'fixture/.symlink/symlink.txt', type: 'symlink', linkname: '../fixture.txt'},
-		{name: 'fixture/dir-fixture/inside.txt', type: 'file'},
-		{name: 'fixture/fixture.txt', type: 'file'},
-		{name: 'fixture/dir-fixture/', type: 'directory'}
-	];
-
-	vinylFs
+	const archiveStream = vinylFs
 		.src(['fixture/**/*', 'fixture/.symlink/**/*'], {
 			cwd: __dirname,
 			base: __dirname,
-			resolveSymlinks: false
+			resolveSymlinks: false,
 		})
 		.pipe(gulpTar('archive.tar'))
 		.pipe(gulpZip())
-		.pipe(gulp.dest('dest', {cwd: __dirname}))
-		.on('finish', onTargz);
+		.pipe(gulp.dest('dest', {cwd: __dirname}));
+
+	await pEvent(archiveStream, 'finish');
+	await onTargz();
 });
