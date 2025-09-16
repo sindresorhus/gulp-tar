@@ -1,3 +1,4 @@
+import process from 'node:process';
 import path from 'node:path';
 import archiver from 'archiver';
 import Vinyl from 'vinyl';
@@ -25,10 +26,24 @@ export default function gulpTar(filename, options) {
 		if (file.isSymbolic()) {
 			archive.symlink(nameNormalized, file.symlink);
 		} else {
+			const isDirectory = file.isNull();
+			let mode = file.stat?.mode;
+
+			// On Windows, directories often lack execute permissions in file.stat.mode,
+			// causing "Permission denied" errors when extracting on Unix systems.
+			// Let archiver use proper defaults by setting mode to null for directories
+			// when the mode lacks execute permissions.
+			if (isDirectory && mode && process.platform === 'win32') {
+				const hasExecute = (mode & 0o111) !== 0; // eslint-disable-line no-bitwise
+				if (!hasExecute) {
+					mode = null;
+				}
+			}
+
 			archive.append(file.contents, {
-				name: nameNormalized + (file.isNull() ? '/' : ''),
-				mode: file.stat && file.stat.mode,
-				date: file.stat && file.stat.mtime ? file.stat.mtime : null,
+				name: nameNormalized + (isDirectory ? '/' : ''),
+				mode,
+				date: file.stat?.mtime ?? null,
 				...options,
 			});
 		}

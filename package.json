@@ -12,6 +12,8 @@
 	},
 	"type": "module",
 	"exports": "./index.js",
+	"types": "./index.d.ts",
+	"sideEffects": false,
 	"engines": {
 		"node": ">=18"
 	},
@@ -19,7 +21,8 @@
 		"test": "xo && ava"
 	},
 	"files": [
-		"index.js"
+		"index.js",
+		"index.d.ts"
 	],
 	"keywords": [
 		"gulpplugin",
@@ -35,6 +38,7 @@
 		"streams"
 	],
 	"dependencies": {
+		"@types/archiver": "^6.0.3",
 		"archiver": "^6.0.1",
 		"gulp-plugin-extras": "^0.3.0",
 		"vinyl": "^3.0.0"
