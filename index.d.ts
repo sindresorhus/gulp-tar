@@ -5,7 +5,7 @@ export type Options = archiver.ArchiverOptions & Omit<archiver.TarEntryData, 'mo
 	/**
 	Entry permissions. When `null`, uses Archiver defaults (directories: 0755, files: 0644).
 	*/
-	mode?: number | null; // eslint-disable-line @typescript-eslint/ban-types
+	mode?: number | null; // eslint-disable-line @typescript-eslint/no-restricted-types
 };
 
 /**
@@ -27,6 +27,4 @@ export default () => (
 );
 ```
 */
-declare function gulpTar(filename: string, options?: Options): Transform;
-
-export default gulpTar;
+export default function gulpTar(filename: string, options?: Options): Transform;
